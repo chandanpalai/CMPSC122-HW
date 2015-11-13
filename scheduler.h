@@ -95,39 +95,69 @@ Restrictions:
 	-No linked lists or tree structures (assume that no more than 20 processes will be handled at a time
 	-Needs to be better than O(n) and O(1) with respect to a constant <= number of processes
 */
-class ShortestRem :public Scheduler
+class SRT :public Scheduler
 {
 	//create new container, algorithm, and overwrite previous methods so that runScheduler() still works
-	protected:
-		Process readySet[20];	// set of processes ready to run
+	private:
+		Process **procs; //this scheduler's way of getting process info
+		Process *readySet[20];	// set of processes ready to run
+		int last_insertion = -1; //index of the most recently inserted value
+		Process *temp_storage; //for swapping
+		int final_loc; //ending location of a value
+		int tracking_index; //index of the child of final_loc as it progresses towards its final index
 	public:
-		ShortestRem() { name = "Shortest Remaining Time"; }
-		virtual void addProcess(int procId)
+		SRT() { name = "SRT"; }
+
+		//grabs the process information, and then runs the simulation
+		void runScheduler(Process* tasks[], int arrival[], int size)
 		{
-			//readySet.pushBack(procId, 0, 'X');
+			procs = tasks;
+			Scheduler::runScheduler(tasks, arrival, size);
+		}
+		void addProcess(int procId)
+		{
+			last_insertion++;
+			readySet[last_insertion] = ;
+			final_loc = last_insertion;
+			tracking_index = last_insertion;
+			if (last_insertion > 0)
+			{
+				while (tasks[(readySet[((final_loc - 1) / 2)]]->dd > procId))
+				{
+					final_loc = ((final_loc - 1) / 2);
+					temp_storage = readySet[final_loc];
+					readySet[final_loc] = procId;
+					readySet[tracking_index] = temp_storage;
+					tracking_index = ((tracking_index - 1) / 2);
+				}
+			}
+
 		}
 		void chooseProcess(int &procId)
 		{
-			//char hold;
-			//readySet.popFront(procId, hold);
+			procId = readySet[0];
+			final_loc = 0;
+			readySet[0] = readySet[last_insertion];
+			readySet[last_insertion] = -1;
+			while (readySet[final_loc] > )
 		}
 		//modify this- should function similarly to preemptive priority, but using remaining time
-		virtual int allowance()
+		int allowance()
 		{
 			if (future.empty()) //nothing of higher priority will be added to readySet
 				return 100000;
-			else if (readySet.empty() && (future.leadTime() - clock < 100000)) //a process will be available before current execution is finished
+			else if (noneReady() && (future.leadTime() - clock < 100000)) //a process will be available before current execution is finished
 				return future.leadTime() - clock;
-			else if (readySet.empty())
+			else if (noneReady())
 				return 100000;
-			else if ((future.begin().process() > readySet.begin().process()) && (future.leadTime() - clock < 100000)) //a process of higher priority than the next item in readySet will be available before current execution is finished
+			else if ((future.begin().re() > readySet.begin().process()) && (future.leadTime() - clock < 100000)) //a process of higher priority than the next item in readySet will be available before current execution is finished
 				return future.leadTime() - clock;
 			else //default allowance of Priority scheduler
 				return 100000;
 		}
-		virtual bool noneReady()
+		bool noneReady()
 		{
-			//return readySet.empty();
+			return readySet[0] == -1;
 		}
 		void runScheduler(Process*[], int[], int);
 };

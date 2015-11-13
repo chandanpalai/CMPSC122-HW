@@ -5,7 +5,7 @@
 class Device;
 class Process
 {
-    protected:
+protected:
 	int myId;		// an identifier for the larger picture
 
 	// A description of the process's total CPU needs
@@ -20,56 +20,58 @@ class Process
 	// A desription of what this process has done so far
 	ProcList log;
 
-    public:
+public:
+	int getId()
+	{
+		return myId;
+	}
+	int getRemainingTime()
+	{
+		return remainingTime;
+	}
 	void restart()	// start at the very beginning
 	{
-	    currentCycle = 0;
-	    remainingTime = usages[0];
-	    log.clear();	// empty the log
+		currentCycle = 0;
+		remainingTime = usages[0];
+		log.clear();	// empty the log
 	}
 
-	void addLog( int time, char state )
+	void addLog(int time, char state)
 	{
-	    log.pushBack( myId, time, state );
+		log.pushBack(myId, time, state);
 	}
 
 	ProcList &getLog()
 	{
-	    return log;		// get summarized results at end
+		return log;		// get summarized results at end
 	}
 
 	virtual bool isInteractive()
-    {
-	    return false;	// assume a background job
-	}
-
-	void run( int &, int, Device *& );
-
-	//Returns how much time the process needs for current burst
-	int timeRemaining()
 	{
-		return remainingTime; 
+		return false;	// assume a background job
 	}
+
+	void run(int &, int, Device *&);
 };
 
 class Computation : public Process
 {
-    public:
-	Computation( int id );
+public:
+	Computation(int id);
 };
 
 class Download : public Process
 {
-    public:
-	Download( int id );
+public:
+	Download(int id);
 };
 
-class Interact: public Process
+class Interact : public Process
 {
-    public:
-	Interact( int id );
+public:
+	Interact(int id);
 	bool isInteractive()
 	{
-	    return true;
+		return true;
 	}
-};	
+};
