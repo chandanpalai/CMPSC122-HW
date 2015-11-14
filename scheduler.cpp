@@ -147,7 +147,7 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 	numInteractions = 0;
 	start_end = 0;  //0 is end time, 1 is start time
 
-	while ((*log_iterator).state() != 'Q')
+	while (!(*interaction_log).empty() && (*log_iterator).state() != 'Q')
 	{
 		if (start_end == 0) //end time
 		{
@@ -170,7 +170,9 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 
 	}
 
-	avgInteraction = avgInteraction / numInteractions;
+	if (!(*interaction_log).empty())
+		avgInteraction = avgInteraction / numInteractions;
+
 	cout << "Average Response Time: " << avgInteraction << endl;
 	cout << "Maximum Response Time: " << largestInteraction << endl;
 
@@ -187,7 +189,11 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 		(*log_iterator).advance();
 	}
 
-	avgDeviation = avgDeviation / numInteractions;
+	if (numInteractions == 0)
+		avgDeviation = 0;
+	else
+		avgDeviation = avgDeviation / numInteractions;
+	
 	standardDeviation = sqrt(avgDeviation);
 
 	cout << "Standard Deviation of Response Time: " << standardDeviation << endl;
