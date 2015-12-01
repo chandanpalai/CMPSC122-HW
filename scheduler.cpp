@@ -56,13 +56,16 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 	{
 		if (noneReady())		// nothing avaliable now, but future is not empty
 		{				
+
 			clock = future.leadTime();		//next available task
 			future.popFront(pid, nextAct);	// get that task
 			addProcess(pid);
+
 		}
 		else 				// else run with what's already scheduled to run
 		{
 			chooseProcess(pid);		//removes first process in readySet
+
 			tasks[pid]->run(clock, allowance(), nextDevice); //runs this process
 
 			//  some tasks may have arrived in the meantime, so get those
@@ -70,6 +73,7 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 			{
 				future.popFront(newpid, nextAct);
 				addProcess(newpid);
+
 			}
 
 			/*
