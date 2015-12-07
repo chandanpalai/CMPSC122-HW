@@ -37,7 +37,7 @@ class Scheduler
 	{
 	    return readySet.empty();
 	}
-    virtual void runScheduler( Process* [], int[], int );
+    virtual void runScheduler( Process* [], int[], int &);
 };
 
 class FCFS : public Scheduler  

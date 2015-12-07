@@ -51,6 +51,16 @@ public:
 		return false;	// assume a background job
 	}
 
+	virtual bool isComputation()
+	{
+		return false;
+	}
+
+	virtual bool isDownload()
+	{
+		return false;
+	}
+
 	void run(int &, int, Device *&);
 };
 
@@ -58,12 +68,20 @@ class Computation : public Process
 {
 public:
 	Computation(int id);
+	bool isComputation()
+	{
+		return true;
+	}
 };
 
 class Download : public Process
 {
 public:
 	Download(int id);
+	bool isDownload()
+	{
+		return true;
+	}
 };
 
 class Interact : public Process
@@ -74,4 +92,10 @@ public:
 	{
 		return true;
 	}
+};
+
+class Shell : public Process
+{
+public:
+	Shell(int id);
 };

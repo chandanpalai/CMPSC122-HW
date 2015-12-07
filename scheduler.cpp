@@ -19,7 +19,7 @@
 //  occur later in the simulation.  A simulation clock advances to
 //  identify which events occur in which order.
 
-void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
+void Scheduler::runScheduler(Process *tasks[], int arrival[], int &size)
 {
 	int pid;			// process wanting action
 	int newpid;			// newly arriving process
@@ -49,6 +49,7 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 	disk.restart();
 	net.restart();
 	console.restart();
+	shell.restart();
 
 	clock = 0;		// initialize the clock
 
@@ -91,14 +92,17 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int size)
 				{ 
 					//process is finished, no need to do anything
 				}
-				else //process wants a new device
+				else if(nextDevice == &shell) //process wants a new device
+				{
+					shell.request(pid, clock, tasks, future, arrival, size);
+				}
+				else
 				{
 					(*nextDevice).request(pid, clock, tasks, future);
 				}
 			}
 		}
 	}
-
 
 	cout << "Performance Stats: " << endl;
 

@@ -32,7 +32,7 @@ void displayHistory(Process *history[], int size, int start, int stop)
 	char  currentState;			// current process state in history
 	int time;				// current time examined
 	int range = stop - start;		// total time period
-	int increment = 1 + range / 45;	// round fractions upwards
+	int increment = 1 + range / 40;	// round fractions upwards
 
 	cout << "Log: " << endl;
 	cout << "Time:  " << setw(4) << start <<

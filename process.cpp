@@ -76,3 +76,15 @@ Interact::Interact( int id )
     }
     nextRequest[bursts-1] = NULL;	// all done!
 }
+
+Shell::Shell(int id)
+{
+	myId = id;
+	bursts = 20;  //don't want more than 20 total processes to be launched
+	for (int i = 0; i < bursts; i++)
+	{
+		usages[i] = 25; //short time to process user's request
+		nextRequest[i] = &shell; //followed by prompting user for new process
+	}
+	nextRequest[bursts-1] = NULL;
+}
