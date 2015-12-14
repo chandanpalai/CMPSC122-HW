@@ -50,7 +50,7 @@ void Device::request(int pid, int clock, Process *tasks[], ProcList &future, int
 		}
 		else if (select == 2) //user wants to create a download
 		{
-			if (size < 2)
+			if (size < 3) //won't be more than 1 existing download
 			{
 				tasks[size] = new Download(size);
 				arrival[size] = console.readyTime;
@@ -74,7 +74,7 @@ void Device::request(int pid, int clock, Process *tasks[], ProcList &future, int
 		}
 		else if (select == 1) //user wants to create a computation
 		{
-			if (size < 2)
+			if (size < 3) //won't be more than 1 existing computation
 			{
 				tasks[size] = new Computation(size);
 				arrival[size] = console.readyTime;
@@ -114,10 +114,6 @@ void Device::request(int pid, int clock, Process *tasks[], ProcList &future, int
 		tasks[pid]->addLog(clock, '-');
 		future.insert(pid, clock, 'X');
 	}
-	//determine whether or not to add a process
-	//if yes, determine what process to create, determine arrival time, clock = arrival time
-	//if no, clock = duration
-	//create process, add to tasks, add to arrival, insert into future, restart process, add "-" to log @ arrival time
 }
 
 //  Each device records a letter to be used in the summary display

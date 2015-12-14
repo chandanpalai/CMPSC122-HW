@@ -92,11 +92,11 @@ void Scheduler::runScheduler(Process *tasks[], int arrival[], int &size)
 				{ 
 					//process is finished, no need to do anything
 				}
-				else if(nextDevice == &shell) //process wants a new device
+				else if(nextDevice == &shell) //process wants to interact with user
 				{
 					shell.request(pid, clock, tasks, future, arrival, size);
 				}
-				else
+				else //process wants new device
 				{
 					(*nextDevice).request(pid, clock, tasks, future);
 				}

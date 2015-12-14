@@ -26,7 +26,7 @@ int main()
    */
 	
 	int size = 1;
-	Scheduler *scheds = new RoundRobin();
+	Scheduler *scheds = new SRT();
 	Process *tasks[20];
 	tasks[0] = new Shell(0);
 	int arrival[20];
